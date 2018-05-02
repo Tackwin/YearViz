@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-ease.v1.min.js"></script>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <link rel="stylesheet" type="text/css" src="./index.css">
+</head>
+
+<body>
+    <h3>Coca par jour.</h3>
+    <script>
+        const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+        const width = 1280 - margin.left - margin.right;
+        const height = 720 - margin.top - margin.bottom;
+
+        const x = d3.scaleTime().range([0, width]);
+        const y = d3.scaleLinear().range([height, 0]);
+
+        const svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g").attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+
+        d3.csv("/data/coca.csv", function (data) {
+            console.log(data);
+            sum = 0;
+            data.forEach(d => {
+                d.x = +d["1"];
+                sum += +d["2"];
+                d.y = sum;
+            });
+
+            x.domain(d3.extent(data, d => d.x));
+            y.domain([0, d3.max(data, d => d.y)]);
+
+            data.forEach((d, i) => {
+                const diff = y(0) - y(d.y);
+
+                svg.append("circle").attr("cx", x(d.x)).attr("cy", y(0)).attr("r", 5).attr("fill", "red")
+                    .transition().ease(d3.easeElasticOut).duration(500).delay(i * 10).attr("cy", y(d.y));
+            })
+
+            svg.append("g").attr("transform", "translate(0, " + height + ")")
+                .call(d3.axisBottom(x));
+            svg.append("g").call(d3.axisLeft(y));
+        })
+
+    </script>
+</body>
+
+</html>
