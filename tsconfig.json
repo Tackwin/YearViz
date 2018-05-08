@@ -1,14 +1,15 @@
 {
-  "compilerOptions": {
-    "noImplicitAny": true,
-    "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "./build",
-    "sourceMap": true,
-    "baseUrl": ".",
-    "allowJs": true,
-    "typeRoots": ["node_modules/@types"],
-    "types": ["node"]
-  }
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "es5",
+        "lib": ["es5", "es6", "dom"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "./build",
+        "sourceMap": true,
+        "baseUrl": ".",
+        "allowJs": true,
+        "typeRoots": ["node_modules/@types"],
+        "types": ["node"]
+    }
 }
